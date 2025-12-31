@@ -12,8 +12,8 @@ jobs:
       - name: Send basic message
         uses: ./
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
             🚀 Push detected on ${{ github.repository }}
 
@@ -25,8 +25,8 @@ jobs:
       - name: Send to CI topic
         uses: ./
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message_thread_id: ${{ secrets.TELEGRAM_THREAD_ID }}
           format: markdown
           message: |
@@ -40,15 +40,15 @@ jobs:
       - name: Send default message
         uses: ./
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       # Disable link preview
       - name: Message without preview
         uses: ./
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           disable_web_page_preview: true
           message: |
             Check out this link without preview: https://github.com
@@ -57,8 +57,8 @@ jobs:
       - name: Silent notification
         uses: ./
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           disable_notification: true
           message: |
             🔕 This is a silent notification

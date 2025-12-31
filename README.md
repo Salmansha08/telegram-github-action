@@ -26,8 +26,8 @@ jobs:
       - name: Send Telegram Message
         uses: Salmansha08/telegram-github-action@main
         with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
             🚀 New push to ${{ github.repository }}
 
@@ -43,8 +43,8 @@ For supergroups with topics enabled, you can send messages to a specific topic:
 - name: Send to CI Topic
   uses: Salmansha08/telegram-github-action@main
   with:
-    to: ${{ secrets.TELEGRAM_TO }}
-    token: ${{ secrets.TELEGRAM_TOKEN }}
+    to: ${{ secrets.TELEGRAM_CHAT_ID }}
+    token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     message_thread_id: ${{ secrets.TELEGRAM_THREAD_ID }}
     message: |
       ✅ Build #${{ github.run_number }} successful!
@@ -56,8 +56,8 @@ For supergroups with topics enabled, you can send messages to a specific topic:
 - name: Send Photo
   uses: Salmansha08/telegram-github-action@main
   with:
-    to: ${{ secrets.TELEGRAM_TO }}
-    token: ${{ secrets.TELEGRAM_TOKEN }}
+    to: ${{ secrets.TELEGRAM_CHAT_ID }}
+    token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     message_thread_id: "123" # Optional: send to topic
     photo: "./screenshot.png"
     message: "Build screenshot"
@@ -69,8 +69,8 @@ For supergroups with topics enabled, you can send messages to a specific topic:
 - name: Send Document
   uses: Salmansha08/telegram-github-action@main
   with:
-    to: ${{ secrets.TELEGRAM_TO }}
-    token: ${{ secrets.TELEGRAM_TOKEN }}
+    to: ${{ secrets.TELEGRAM_CHAT_ID }}
+    token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     document: "./build-report.pdf"
 ```
 
@@ -122,8 +122,8 @@ Add these secrets to your repository:
 
 | Secret               | Description                            |
 | -------------------- | -------------------------------------- |
-| `TELEGRAM_TOKEN`     | Bot API token from BotFather           |
-| `TELEGRAM_TO`        | Chat ID to send messages to            |
+| `TELEGRAM_BOT_TOKEN`     | Bot API token from BotFather           |
+| `TELEGRAM_CHAT_ID`        | Chat ID to send messages to            |
 | `TELEGRAM_THREAD_ID` | _(Optional)_ Topic ID for forum groups |
 
 ## 📜 License
