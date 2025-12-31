@@ -1,45 +1,45 @@
-name: 'Telegram Message Notify'
-description: 'Sending a Telegram message'
-author: 'Bo-Yi Wu'
+name: "Telegram Message Notify"
+description: "Send Telegram notification messages with topic/forum support"
+author: "Salmansha08"
+
 inputs:
   to:
-    description: 'telegram user'
+    description: "Telegram chat ID (user, group, or channel)"
+    required: true
   token:
-    description: 'telegram token'
+    description: "Telegram Bot API token"
+    required: true
   message:
-    description: 'telegram message'
+    description: "Message text to send"
+    required: false
   message_file:
-    description: 'overwrite the default message template with the contents of the specified file'
-  socks5:
-    description: 'support socks5 proxy URL'
+    description: "Path to file containing message text (overrides message)"
+    required: false
+  message_thread_id:
+    description: "Unique identifier for the target message thread (topic) of a forum supergroup"
+    required: false
   photo:
-    description: 'send the photo message.'
+    description: "Path to photo file to send"
+    required: false
   document:
-    description: 'send the document message.'
-  sticker:
-    description: 'send the sticker message.'
-  audio:
-    description: 'send the audio message.'
-  voice:
-    description: 'send the voice message.'
-  location:
-    description: 'send the location message.'
-  venue:
-    description: 'send the venue message.'
-  video:
-    description: 'send the video message.'
-  debug:
-    description: 'enable debug mode.'
+    description: "Path to document file to send"
+    required: false
   format:
-    description: 'message format: markdown or html'
+    description: "Message format: markdown or html"
+    required: false
   disable_web_page_preview:
-    description: 'disables link previews for links in this message'
+    description: "Disable link preview in messages"
+    required: false
+    default: "false"
   disable_notification:
-    description: 'disables notifications for this message, supports sending a message without notification,'
+    description: "Send message silently without notification sound"
+    required: false
+    default: "false"
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
 
 branding:
-  icon: 'message-square'
-  color: 'blue'
+  icon: "message-square"
+  color: "blue"

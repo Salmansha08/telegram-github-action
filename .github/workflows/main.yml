@@ -1,0 +1,30 @@
+name: Telegram Notification
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    name: Build & Notify
+    runs-on: ubuntu-latest
+    environment: "Telegram Github Action"
+    steps:
+      - uses: actions/checkout@v4
+
+      # Main notification - sent to topic
+      - name: 📢 CI Notification
+        uses: ./
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message_thread_id: ${{ secrets.TELEGRAM_THREAD_ID }}
+          format: html
+          message: |
+            <b>🚀 Push to ${{ github.ref_name }}</b>
+
+            📦 <code>${{ github.repository }}</code>
+            📝 ${{ github.event.head_commit.message }}
+            👤 ${{ github.actor }}
+            🔗 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">View Commit</a>

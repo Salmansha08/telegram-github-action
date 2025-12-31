@@ -1,3 +1,0 @@
-Sample message loaded from file.
-
-Commit msg:  {{commit.message}}
