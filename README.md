@@ -122,8 +122,8 @@ Add these secrets to your repository:
 
 | Secret               | Description                            |
 | -------------------- | -------------------------------------- |
-| `TELEGRAM_BOT_TOKEN`     | Bot API token from BotFather           |
-| `TELEGRAM_CHAT_ID`        | Chat ID to send messages to            |
+| `TELEGRAM_BOT_TOKEN` | Bot API token from BotFather           |
+| `TELEGRAM_CHAT_ID`   | Chat ID to send messages to            |
 | `TELEGRAM_THREAD_ID` | _(Optional)_ Topic ID for forum groups |
 
 ## 📜 License
