@@ -1,170 +1,135 @@
-# 🚀 Telegram for GitHub Actions
+# 🚀 Telegram Notify for GitHub Actions
 
-[繁體中文](./README.zh-tw.md) | [简体中文](./README.zh-cn.md)
+GitHub Action for sending Telegram notification messages **with topic (forum) support**.
 
-[GitHub Action](https://github.com/features/actions) for sending Telegram notification messages.
+## ✨ Features
 
-![notification](./images/telegram-notification.png)
+- ✅ Send text messages (Markdown or HTML format)
+- ✅ **Send to forum topics** using `message_thread_id`
+- ✅ Send photo attachments
+- ✅ Send document attachments
+- ✅ Disable link previews
+- ✅ Silent notifications
 
-[![Actions Status](https://github.com/appleboy/telegram-action/workflows/telegram%20message/badge.svg)](https://github.com/appleboy/telegram-action/actions)
+## 📖 Usage
 
-## Usage
-
-**Note**: If you receive the "Error: Chat not found" error, please refer to this StackOverflow answer [here](https://stackoverflow.com/a/41291666).
-
-Send a custom message and view the custom variables below.
+### Basic Usage
 
 ```yml
-name: telegram message
+name: Telegram Notification
 on: [push]
-jobs:
 
-  build:
-    name: Build
+jobs:
+  notify:
     runs-on: ubuntu-latest
     steps:
-      - name: send telegram message on push
-        uses: appleboy/telegram-action@master
+      - name: Send Telegram Message
+        uses: Salmansha08/telegram-github-action@main
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-            
-            Repository: ${{ github.repository }}
-            
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            🚀 New push to ${{ github.repository }}
+
+            Commit: ${{ github.event.head_commit.message }}
+            Author: ${{ github.actor }}
 ```
 
-Remove `args` to send the default message.
+### 📌 Send to Topic (Forum)
+
+For supergroups with topics enabled, you can send messages to a specific topic:
 
 ```yml
-- name: send default message
-  uses: appleboy/telegram-action@master
+- name: Send to CI Topic
+  uses: Salmansha08/telegram-github-action@main
   with:
     to: ${{ secrets.TELEGRAM_TO }}
     token: ${{ secrets.TELEGRAM_TOKEN }}
+    message_thread_id: ${{ secrets.TELEGRAM_THREAD_ID }}
+    message: |
+      ✅ Build #${{ github.run_number }} successful!
 ```
 
-![workflow](./images/telegram-workflow.png)
-
-## Input variables
-
-| Variable                 | Description                                                                                                             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| socks5                   | optional. Support socks5 proxy URL                                                                                      |
-| photo                    | optional. Photo message                                                                                                 |
-| document                 | optional. Document message                                                                                              |
-| sticker                  | optional. Sticker message                                                                                               |
-| audio                    | optional. Audio message                                                                                                 |
-| voice                    | optional. Voice message                                                                                                 |
-| location                 | optional. Location message                                                                                              |
-| venue                    | optional. Venue message                                                                                                 |
-| video                    | optional. Video message                                                                                                 |
-| debug                    | optional. Enable debug mode                                                                                             |
-| format                   | optional. `markdown` or `html`. See [MarkdownV2 style](https://core.telegram.org/bots/api#markdownv2-style)             |
-| message                  | optional. Custom message                                                                                                |
-| message_file             | optional. Overwrite the default message template with the contents of the specified file.                               |
-| disable_web_page_preview | optional. Disables link previews for links in this message. Default is `false`.                                         |
-| disable_notification     | optional. Disables notifications for this message, supports sending a message without notification. Default is `false`. |
-
-## Example
-
-Send photo message:
+### 📷 Send with Photo
 
 ```yml
-- uses: actions/checkout@master
-- name: send photo message
-  uses: appleboy/telegram-action@master
+- name: Send Photo
+  uses: Salmansha08/telegram-github-action@main
   with:
     to: ${{ secrets.TELEGRAM_TO }}
     token: ${{ secrets.TELEGRAM_TOKEN }}
-    message: send photo message
-    photo: tests/github.png
-    document: tests/gophercolor.png
+    message_thread_id: "123" # Optional: send to topic
+    photo: "./screenshot.png"
+    message: "Build screenshot"
 ```
 
-Send location message:
+### 📄 Send with Document
 
 ```yml
-- name: send location message
-  uses: appleboy/telegram-action@master
+- name: Send Document
+  uses: Salmansha08/telegram-github-action@main
   with:
     to: ${{ secrets.TELEGRAM_TO }}
     token: ${{ secrets.TELEGRAM_TOKEN }}
-    location: '24.9163213 121.1424972'
-    venue: '35.661777 139.704051 竹北體育館 新竹縣竹北市'
+    document: "./build-report.pdf"
 ```
 
-Send message using custom proxy (support `http`, `https`, and `socks5`) like `socks5://127.0.0.1:1080` or `http://222.124.154.19:23500`
+## 📥 Input Parameters
 
-```yml
-- name: send message using socks5 proxy URL
-  uses: appleboy/telegram-action@master
-  with:
-    to: ${{ secrets.TELEGRAM_TO }}
-    token: ${{ secrets.TELEGRAM_TOKEN }}
-    socks5: "http://222.124.154.19:23500"
-    message: Send message from socks5 proxy URL.
-```
+| Parameter                  | Required | Description                                           |
+| -------------------------- | -------- | ----------------------------------------------------- |
+| `to`                       | ✅       | Telegram chat ID (user, group, or channel)            |
+| `token`                    | ✅       | Telegram Bot API token                                |
+| `message`                  | ❌       | Message text to send                                  |
+| `message_file`             | ❌       | Path to file containing message (overrides `message`) |
+| `message_thread_id`        | ❌       | Topic ID for forum supergroups                        |
+| `photo`                    | ❌       | Path to photo file to send                            |
+| `document`                 | ❌       | Path to document file to send                         |
+| `format`                   | ❌       | Message format: `markdown` or `html`                  |
+| `disable_web_page_preview` | ❌       | Disable link preview (default: `false`)               |
+| `disable_notification`     | ❌       | Send silently (default: `false`)                      |
 
-## Secrets
+## 🔑 Getting Credentials
 
-Getting started with [Telegram Bot API](https://core.telegram.org/bots/api).
+### Bot Token
 
-* `token`: Telegram authorization token.
-* `to`: Unique identifier for this chat.
+1. Message [@BotFather](https://t.me/BotFather) on Telegram
+2. Send `/newbot` and follow the instructions
+3. Copy the token provided
 
-How to get unique identifier from telegram api:
+### Chat ID
+
+For **private chats** or **groups**:
 
 ```bash
-curl https://api.telegram.org/bot<token>/getUpdates
+curl https://api.telegram.org/bot<TOKEN>/getUpdates
 ```
 
-See the result: (get chat id like `65382999`)
+Look for `"chat": {"id": 123456789}` in the response.
 
-```json
-{
-  "ok": true,
-  "result": [
-    {
-      "update_id": 664568113,
-      "message": {
-        "message_id": 8423,
-        "from": {
-          "id": 65382999,
-          "is_bot": false,
-          "first_name": "Bo-Yi",
-          "last_name": "Wu (appleboy)",
-          "username": "appleboy46",
-          "language_code": "en"
-        },
-        "chat": {
-          "id": 65382999,
-          "first_name": "Bo-Yi",
-          "last_name": "Wu (appleboy)",
-          "username": "appleboy46",
-          "type": "private"
-        },
-        "date": 1550333434,
-        "text": "?"
-      }
-    }
-  ]
-}
-```
+### Message Thread ID (Topic)
 
-## Template variable
+For **forum topics**:
 
-| Github Variable   | Telegram Template Variable |
-| ----------------- | -------------------------- |
-| GITHUB_REPOSITORY | repo                       |
-| GITHUB_ACTOR      | repo.namespace             |
-| GITHUB_SHA        | commit.sha                 |
-| GITHUB_REF        | commit.ref                 |
-| GITHUB_WORKFLOW   | github.workflow            |
-| GITHUB_ACTION     | github.action              |
-| GITHUB_EVENT_NAME | github.event.name          |
-| GITHUB_EVENT_PATH | github.event.path          |
-| GITHUB_WORKSPACE  | github.workspace           |
+1. Send a message to the topic from Telegram app
+2. Right-click the message → "Copy Message Link"
+3. Link format: `https://t.me/c/<chat_id>/<thread_id>/<msg_id>`
+4. The `<thread_id>` is your `message_thread_id`
+
+## 🔧 Secrets Configuration
+
+Add these secrets to your repository:
+
+| Secret               | Description                            |
+| -------------------- | -------------------------------------- |
+| `TELEGRAM_TOKEN`     | Bot API token from BotFather           |
+| `TELEGRAM_TO`        | Chat ID to send messages to            |
+| `TELEGRAM_THREAD_ID` | _(Optional)_ Topic ID for forum groups |
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+Based on [appleboy/telegram-action](https://github.com/appleboy/telegram-action), rewritten with native topic support.

@@ -1,5 +1,9 @@
-FROM ghcr.io/appleboy/drone-telegram:1.4.0
+FROM alpine:3.23
 
+# Install dependencies
+RUN apk add --no-cache curl jq
+
+# Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
