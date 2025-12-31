@@ -118,13 +118,49 @@ For **forum topics**:
 
 ## 🔧 Secrets Configuration
 
-Add these secrets to your repository:
+This action uses **GitHub Environment Secrets** for secure credential storage.
+
+### Step 1: Create Environment
+
+1. Go to your repository on GitHub
+2. Navigate to **Settings** → **Environments**
+3. Click **New environment**
+4. Name it `Telegram Github Action` (or your preferred name)
+5. Click **Configure environment**
+
+### Step 2: Add Secrets
+
+In the environment configuration page:
+
+1. Scroll to **Environment secrets**
+2. Click **Add environment secret**
+3. Add the following secrets:
 
 | Secret               | Description                            |
 | -------------------- | -------------------------------------- |
 | `TELEGRAM_BOT_TOKEN` | Bot API token from BotFather           |
 | `TELEGRAM_CHAT_ID`   | Chat ID to send messages to            |
 | `TELEGRAM_THREAD_ID` | _(Optional)_ Topic ID for forum groups |
+
+### Step 3: Update Workflow
+
+Add the `environment` field to your workflow job:
+
+```yml
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    environment: "Telegram Github Action"  # ← Add this line
+    steps:
+      - name: Send Telegram Message
+        uses: Salmansha08/telegram-github-action@main
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: "Hello from GitHub Actions!"
+```
+
+> **Note:** The `environment` name must match exactly with the environment you created in Step 1.
 
 ## 📜 License
 
